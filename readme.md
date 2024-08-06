@@ -90,6 +90,50 @@ curl -X POST http://localhost:4001/shelters \
   "medicine3": "Antibiotics"
 }'
 ```
+### 4. 避難所IDに基づいて避難者情報を取得
+
+- **URL:** `/people/:shelterid`
+- **メソッド:** `GET`
+- **説明:** 指定された避難所IDに基づいて、その避難所に所属する避難者情報を取得します。
+
+### 例
+
+#### リクエスト
+
+```sh
+curl -X GET http://localhost:4001/people/2
+```
+
+#### レスポンス
+
+```json
+[
+  {
+    "_id": "66b23bc0797a00169cf3f555",
+    "rakutenId": "r44556",
+    "name": "井上花子",
+    "birthDate": "1987-09-22T00:00:00.000Z",
+    "gender": "女性",
+    "requiredMedicine": "Aspirin",
+    "medicinePerDay": 2,
+    "shelterId": 2
+  },
+  {
+    "_id": "66b23bc0797a00169cf3f558",
+    "rakutenId": "r55667",
+    "name": "山本健太",
+    "birthDate": "1988-03-20T00:00:00.000Z",
+    "gender": "男性",
+    "requiredMedicine": "Paracetamol",
+    "medicinePerDay": 3,
+    "shelterId": 2
+  }
+]
+```
+
+このエンドポイントを利用することで、指定された避難所IDに所属するすべての避難者の情報を取得することができます。
+
+
 
 ## ログとエラー処理
 

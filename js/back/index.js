@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // MongoDBの接続URL
-const mongoURI = process.env.MONGO_URI || "mongodb://localhost:27017";
+const mongoURI = process.env.MONGO_URI || "mongodb://localhost:27017/shelter";
 
 // MongoDBに接続
 mongoose.connect(mongoURI)
@@ -33,10 +33,28 @@ const shelterSchema = new mongoose.Schema({
 // 修正: モデル名とコレクション名の確認
 const Shelter = mongoose.model("Shelter", shelterSchema, "shelter_info");
 
+
+// 人スキーマ
+const personSchema = new mongoose.Schema({
+  rakutenId: String,
+  name: String,
+  birthDate: Date,
+  gender: String,
+  requiredMedicine: String,
+  medicinePerDay: Number,
+  shelterId: Number, // 避難所IDと関連付け
+});
+
+const Person = mongoose.model("Person", personSchema, "people_info");
+
+
+
+
 // 県の情報に基づいて避難所情報を取得するエンドポイント
 app.get("/shelters/:prefecture", async (req, res) => {
   try {
     const prefecture = req.params.prefecture;
+    const regex = new RegExp(`^${prefecture}$`, 'i');  // 大文字小文字を区別しない正規表現
     const shelters = await Shelter.find({ prefecture });
 
     console.log("取得した避難所情報:", shelters);  // 追加: デバッグ用ログ
@@ -82,6 +100,28 @@ app.get("/location/hinanzyo/:id", async (req, res) => {
     res.status(500).send("エラーが発生しました");
   }
 });
+
+// 避難所IDに基づいて人情報を取得するエンドポイント
+app.get("/people/:shelterId", async (req, res) => {
+  try {
+    const shelterId = parseInt(req.params.shelterId, 10); // 避難所IDを数値として処理
+    const people = await Person.find({ shelterId });
+
+    if (!people || people.length === 0) {
+      return res.status(404).send("該当する人が見つかりません");
+    }
+
+    console.log("取得した人情報:", people);  // 追加: デバッグ用ログ
+
+    res.json(people);
+  } catch (error) {
+    console.error("エラーが発生しました:", error);
+    res.status(500).send("エラーが発生しました");
+  }
+});
+
+
+
 
 
 // サーバーの起動
