@@ -48,6 +48,13 @@ app.get("/shelters/:prefecture", async (req, res) => {
   }
 });
 
+
+
+
+
+
+
+
 // 新しい避難所情報を追加するエンドポイント
 app.post("/shelters", async (req, res) => {
   try {
@@ -61,11 +68,33 @@ app.post("/shelters", async (req, res) => {
   }
 });
 
+
+
+// 避難所IDに基づいて避難所情報を取得するエンドポイント
+app.get("/location/hinanzyo/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);  // IDは数値として処理
+    const shelter = await Shelter.findOne({ id });
+
+    if (!shelter) {
+      return res.status(404).send("避難所が見つかりません");
+    }
+
+    console.log("取得した避難所情報:", shelter);  // 追加: デバッグ用ログ
+
+    res.json(shelter);
+  } catch (error) {
+    console.error("エラーが発生しました:", error);
+    res.status(500).send("エラーが発生しました");
+  }
+});
+
+
+
 // サーバーの起動
 const PORT = process.env.PORT || 4001;
 app.listen(PORT, () => {
   console.log(`server listening on port${PORT}.`);
-
 });
 
 
