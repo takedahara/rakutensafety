@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // MongoDBの接続URL
-const mongoURI = "mongodb://127.0.0.1:27017/shelters";
+const mongoURI = process.env.MONGO_URI || "mongodb://localhost:27017";
 
 // MongoDBに接続
 mongoose.connect(mongoURI)
@@ -43,8 +43,8 @@ app.get("/shelters/:prefecture", async (req, res) => {
 
     res.json(shelters);
   } catch (error) {
-    console.error("エラーが発生しました:", error);
-    res.status(500).send("エラーが発生しました");
+    console.error("could not catch information from DB:", error);
+    res.status(500).send("error occurred while fetching shelter information");
   }
 });
 
@@ -64,7 +64,8 @@ app.post("/shelters", async (req, res) => {
 // サーバーの起動
 const PORT = process.env.PORT || 4001;
 app.listen(PORT, () => {
-  console.log(`サーバーがポート${PORT}で起動しました`);
+  console.log(`server listening on port${PORT}.`);
+
 });
 
 
