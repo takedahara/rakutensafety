@@ -49,12 +49,6 @@ app.get("/shelters/:prefecture", async (req, res) => {
 });
 
 
-
-
-
-
-
-
 // 新しい避難所情報を追加するエンドポイント
 app.post("/shelters", async (req, res) => {
   try {
@@ -88,7 +82,6 @@ app.get("/location/hinanzyo/:id", async (req, res) => {
     res.status(500).send("エラーが発生しました");
   }
 });
-
 
 
 // サーバーの起動
