@@ -89,15 +89,64 @@
             }
         }
     </style>
+    <script>
+      function sendLocationToServer(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+  
+        fetch('/Button2Map', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            latitude: latitude,
+            longitude: longitude
+          })
+        })
+        .then(response => response.text())
+        .then(data => {
+          console.log(data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      }
+  
+      function getLocation() {
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(sendLocationToServer, showError);
+        } else {
+          alert('Geolocation is not supported by this browser.');
+        }
+      }
+  
+      function showError(error) {
+        switch(error.code) {
+          case error.PERMISSION_DENIED:
+            alert('User denied the request for Geolocation.');
+            break;
+          case error.POSITION_UNAVAILABLE:
+            alert('Location information is unavailable.');
+            break;
+          case error.TIMEOUT:
+            alert('The request to get user location timed out.');
+            break;
+          case error.UNKNOWN_ERROR:
+            alert('An unknown error occurred.');
+            break;
+        }
+      }
+    </script>
 </head>
 <body>
     <div class="container">
         <div class="map"></div>
         <div class="button-container">
             <!-- Each form has its own action but shares the same button style -->
-            <form action="/Button2Map" method="POST">
-                <button type="submit" name="action" value="map" class="button">地図へ</button>
-            </form>
+            <!-- <form action="/Button2Map" method="POST"> -->
+                <button onclick="getLocation()" type="submit" name="action" value="map" class="button">地図へ</button>
+            <!-- </form> -->
             <form action="/Button2HealthCare" method="POST">
                 <button type="submit" name="action" value="healthcare" class="button">ヘルスケアへ </button>
             </form>
