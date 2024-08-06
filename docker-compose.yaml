@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./js/back
+    ports:
+      - "4001:4001"
+    volumes:
+      - ./js/back:/app
+    depends_on:
+      - mongo
+
+  frontend:
+    build:
+      context: ./js/client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./js/client:/app
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+
+volumes:
+  mongo-data:
