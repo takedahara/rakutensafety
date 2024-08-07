@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // MongoDBの接続URL
-const mongoURI = process.env.MONGO_URI || "mongodb://localhost:27017/shelter";
+const mongoURI = process.env.MONGO_URI || "mongodb://mongo:27017/shelter";
 
 // MongoDBに接続
 mongoose.connect(mongoURI)
@@ -119,6 +119,7 @@ app.get("/people/:shelterId", async (req, res) => {
     res.status(500).send("エラーが発生しました");
   }
 });
+
 
 
 
