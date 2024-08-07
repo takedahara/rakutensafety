@@ -38,8 +38,9 @@ exports.CurrentLocation = async (req, res) => {
 
       if (prefecture) {
         console.log('都道府県名:', prefecture);
-        // return prefecture;
-        getShelterInfo(prefecture);
+        const shelterInfo = await getShelterInfo(prefecture);
+        console.log(shelterInfo);
+        return res.json(shelterInfo);  
       } else {
         console.log('都道府県名が見つかりませんでした。');
       }
@@ -60,11 +61,26 @@ async function getShelterInfo(prefecture) {
     }
 
     const data = await response.json();
-    console.log("取得した避難所情報:", data);
+    // console.log("取得した避難所情報:", data);
+    return data;
 
   } catch (error) {
     console.error("エラーが発生しました:", error);
     console.log("エラーが発生しました。");
   }
 }
+
+// const express = require('express');
+// app = express();
+
+// app.get('/GetLocations', (req, res) => {
+//     // サンプルの位置情報データ
+//     const locations = [
+//       { latitude: 35.6895, longitude: 139.6917, accuracy: 100 }, // 東京
+//       { latitude: 34.0522, longitude: -118.2437, accuracy: 200 }, // ロサンゼルス
+//       { latitude: 51.5074, longitude: -0.1278, accuracy: 150 } // ロンドン
+//     ];
+  
+//     res.json({ locations });
+//   });
   
