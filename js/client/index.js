@@ -10,12 +10,8 @@ app.use(bodyParser.json()); // JSONパーサーを設定
 app.set('view engine', 'ejs');
 
 // ルートの設定
-const Router1 = require('./routes/login_route');
-const Router2 = require('./routes/route');
-const Router3 = require('./routes/MapRoute');
-app.use('/', Router1);
-app.use('/view', Router2);
-app.use('/Map', Router3);
+const indexRouter = require('./routes/route');
+app.use('/', indexRouter);
 
 app.get('/GetLocations', (req, res) => {
   // サンプルの位置情報データ
