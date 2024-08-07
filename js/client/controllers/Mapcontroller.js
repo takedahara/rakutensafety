@@ -53,7 +53,7 @@ exports.CurrentLocation = async (req, res) => {
 
 async function getShelterInfo(prefecture) {
   try {
-    const response = await fetch(`http://localhost:4001/shelters/${prefecture}`);
+    const response = await fetch(`http://backend:4001/shelters/${prefecture}`);
 
     if (!response.ok) {
       throw new Error('避難所情報の取得に失敗しました');

@@ -179,7 +179,21 @@ db.shelter_info.insertMany([
         medicine2: 45,
         medicine3: 35,
       }
-    }
+    },
+    {
+        id: 7,
+        name: "避難所G",
+        location: "市区町村U",
+        prefecture: "Fukuoka",
+        capacity: 220,
+        food: 80,
+        water: 90,
+        medicines: {
+          medicine1: 55,
+          medicine2: 45,
+          medicine3: 35,
+        }
+      }
 ])
 
 

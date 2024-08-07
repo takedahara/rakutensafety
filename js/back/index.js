@@ -40,7 +40,7 @@ const personSchema = new mongoose.Schema({
   gender: String,
   medicinePerDay: Object, // 各薬の1日当たりの必要量をオブジェクトで管理
   shelterId: Number,
-}); 
+});
 
 const Person = mongoose.model("Person", personSchema, "people_info");
 
