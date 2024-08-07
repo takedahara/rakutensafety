@@ -65,7 +65,7 @@
 
       input {
         text-align: center;
-        background-color: #ECF0F1;
+        background-color: #dfdfdf;
         border: 2px solid transparent;
         border-radius: 25px; /* Further increased border-radius for inputs */
         font-size: 1.2em;
@@ -151,19 +151,21 @@
         </div>
 
         <div class="login-form">
-          <form id="login-form" action="/Button2View" method="POST">
+          <form id="login-form" action="/Button2View" method="post">
             <div class="control-group">
-              <input type="text" class="login-field" placeholder="ユーザID" id="login-name">
+              <input type="text" class="login-field" name="loginName" placeholder="ユーザID" id="login-name">
               <label class="login-field-icon fui-user" for="login-name"></label>
             </div>
 
             <div class="control-group">
-              <input type="password" class="login-field" placeholder="パスワード" id="login-pass">
+              <input type="password" class="login-field" name="loginPass" placeholder="パスワード" id="login-pass">
               <label class="login-field-icon fui-lock" for="login-pass"></label>
             </div>
 
-            <button onclick="validateLogin(event)" class="btn btn-primary btn-large btn-block">ログイン</button>
-            <div id="error-message" class="error-message">ユーザIDもしくはパスワードが間違っています</div>
+            <button type="submit" class="btn btn-primary btn-large btn-block">ログイン</button>
+            <div id="error-message" class="error-message" style="display: <%= error ? 'block' : 'none' %>;">
+                <%= error %>
+            </div>
           </form>
 
           <a class="login-link" href="https://grp01.id.rakuten.co.jp/rms/nid/registfwd?service_id=top">楽天アカウントを新規作成</a>

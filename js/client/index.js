@@ -10,12 +10,19 @@ app.use(bodyParser.json()); // JSONパーサーを設定
 app.set('view engine', 'ejs');
 
 // ルートの設定
-const Router1 = require('./routes/login_route');
-const Router2 = require('./routes/route');
-const Router3 = require('./routes/MapRoute');
-app.use('/', Router1);
-app.use('/view', Router2);
-app.use('/Map', Router3);
+const indexRouter = require('./routes/route');
+app.use('/', indexRouter);
+
+app.get('/GetLocations', (req, res) => {
+  // サンプルの位置情報データ
+  const locations = [
+    { latitude: 35.6895, longitude: 139.6917, accuracy: 100 }, // 東京
+    { latitude: 34.0522, longitude: -118.2437, accuracy: 200 }, // ロサンゼルス
+    { latitude: 51.5074, longitude: -0.1278, accuracy: 150 } // ロンドン
+  ];
+
+  res.json({ locations });
+});
 
 
 
