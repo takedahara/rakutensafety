@@ -151,7 +151,7 @@
         </div>
 
         <div class="login-form">
-          <form id="login-form" action="/Button2View" method="get">
+          <form id="login-form" action="/Button2View" method="post">
             <div class="control-group">
               <input type="text" class="login-field" name="loginName" placeholder="ユーザID" id="login-name">
               <label class="login-field-icon fui-user" for="login-name"></label>
@@ -162,8 +162,10 @@
               <label class="login-field-icon fui-lock" for="login-pass"></label>
             </div>
 
-            <button onclick="validateLogin(event)" class="btn btn-primary btn-large btn-block">ログイン</button>
-            <div id="error-message" class="error-message">ユーザIDもしくはパスワードが間違っています</div>
+            <button type="submit" class="btn btn-primary btn-large btn-block">ログイン</button>
+            <div id="error-message" class="error-message" style="display: <%= error ? 'block' : 'none' %>;">
+                <%= error %>
+            </div>
           </form>
 
           <a class="login-link" href="https://grp01.id.rakuten.co.jp/rms/nid/registfwd?service_id=top">楽天アカウントを新規作成</a>
