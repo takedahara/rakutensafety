@@ -123,30 +123,30 @@
       }
     </style>
     <script>
-      function validateLogin(data) {
+      function validateLogin(event) {
         event.preventDefault(); // Prevent the form from submitting immediately
 
         var username = document.getElementById('login-name').value;
         var password = document.getElementById('login-pass').value;
         var errorMessage = document.getElementById('error-message');
 
-        var data = {
-          rakutenid: username,
-          password: password
-        };
+        // console.log(username);
 
         fetch('/ValidateLogin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify({
+          rakutenid: username,
+          password: password
+        })
         })
         .then(response => response.json())
         .then(data => {
           console.log('Success:', data);
           console.log(data.message)
-          if (data.message === '') {
+          if (data.message === 'Login successful') {
             window.location.href = '/Button2View';
           } else {
             errorMessage.style.display = 'block';
