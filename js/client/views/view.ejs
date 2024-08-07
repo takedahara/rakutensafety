@@ -45,7 +45,7 @@
             padding: 25px;
             background: rgb(207, 207, 207);
             border-radius: 50px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            border: px solid #BF0000; /* Added border */
             animation: fadeIn 1s ease-out;
         }
 
@@ -65,9 +65,8 @@
             padding: 40px 140px;
             margin: 20px 0;
             background-color: white;
-            border: none;
+            border: 3px solid #BF0000; /* Added border */
             border-radius: 22px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             cursor: pointer;
             font-size: 32px;
             font-weight: bold;
@@ -79,7 +78,6 @@
         .button:hover {
             background-color: #f0f0f0;
             transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
         @media (orientation: portrait) {
@@ -99,7 +97,7 @@
                 <button type="submit" name="action" value="map" class="button">地図へ</button>
             </form>
             <form action="/Button2HealthCare" method="POST">
-                <button type="submit" name="action" value="healthcare" class="button">ヘルスケアへ </button>
+                <button type="submit" name="action" value="healthcare" class="button">ヘルスケアへ</button>
             </form>
             <form action="/Button2Mobile" method="POST">
                 <button type="submit" name="action" value="safety" class="button">安否確認へ</button>
