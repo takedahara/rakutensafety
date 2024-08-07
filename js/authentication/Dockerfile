@@ -9,4 +9,6 @@ RUN apk update && apk add --no-cache curl
 
 COPY ./ ./
 
-CMD ["node", "server.js"]
+CMD ["node", "index.js"]
+
+
