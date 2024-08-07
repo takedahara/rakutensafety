@@ -21,6 +21,19 @@ services:
     volumes:
       - ./js/client:/app
 
+  auth:
+    build:
+      context: ./js/authentication
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./js/authentication:/app
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/shelter
+
+
   mongo:
     image: mongo
     ports:
