@@ -123,20 +123,38 @@
       }
     </style>
     <script>
-      function validateLogin(event) {
+      function validateLogin(data) {
         event.preventDefault(); // Prevent the form from submitting immediately
 
         var username = document.getElementById('login-name').value;
         var password = document.getElementById('login-pass').value;
         var errorMessage = document.getElementById('error-message');
 
-        // if (username === 'Rakuten' && password === 'rakuten2024') {
-        if (username === 'r' && password === 'r') {
-          // Submit the form programmatically
-          document.getElementById('login-form').submit();
-        } else {
-          errorMessage.style.display = 'block';
-        }
+        var data = {
+          rakutenid: username,
+          password: password
+        };
+
+        fetch('/ValidateLogin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          console.log(data.message)
+          if (data.message === '') {
+            window.location.href = '/Button2View';
+          } else {
+            errorMessage.style.display = 'block';
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        })
       }
     </script>
 </head>
@@ -151,7 +169,7 @@
         </div>
 
         <div class="login-form">
-          <form id="login-form" action="/Button2View" method="get">
+          <form id="login-form" action="/ValidateLogin" method="post">
             <div class="control-group">
               <input type="text" class="login-field" name="loginName" placeholder="ユーザID" id="login-name">
               <label class="login-field-icon fui-user" for="login-name"></label>

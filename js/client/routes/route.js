@@ -14,5 +14,7 @@ router.get('/Map', contactController.index);
 // router.post('/Button2Mobile', homeController.Button2Mobile);
 // ページを開いた時に現在地を取得する
 router.post('/CurrentLocation', contactController.CurrentLocation);
+// ログイン情報確認
+router.post('/ValidateLogin', homeController.ValidateLogin);
 
 module.exports = router;
