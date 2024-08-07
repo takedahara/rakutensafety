@@ -2,5 +2,10 @@ const express = require('express');
 const router = express.Router();
 const homeController = require('../controllers/Mapcontroller');
 
-// Mapページ
-router.get('/Map', homeController.index);
+// ホームページのルート
+router.get('/', homeController.index);
+
+// ページを開いた時に現在地を取得する
+router.post('/CurrentLocation', homeController.CurrentLocation);
+
+module.exports = router;

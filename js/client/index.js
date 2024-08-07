@@ -10,7 +10,7 @@ app.use(bodyParser.json()); // JSONパーサーを設定
 app.set('view engine', 'ejs');
 
 // ルートの設定
-const indexRouter = require('./routes/route');
+const indexRouter = require('./routes/MapRoute');
 app.use('/', indexRouter);
 
 app.listen(port, () => {
