@@ -38,7 +38,8 @@ exports.CurrentLocation = async (req, res) => {
 
       if (prefecture) {
         console.log('都道府県名:', prefecture);
-        return prefecture;
+        // return prefecture;
+        getShelterInfo(prefecture);
       } else {
         console.log('都道府県名が見つかりませんでした。');
       }
@@ -50,25 +51,20 @@ exports.CurrentLocation = async (req, res) => {
   }
 };
 
-async function fetchShelters(prefecture) {
-
+async function getShelterInfo(prefecture) {
   try {
-    // fetch APIを使用してデータを取得
-    const response = await fetch('http://localhost:3000/shelters/${prefecture}');
-    
-    // レスポンスがOKかどうかを確認
+    const response = await fetch(`http://localhost:4001/shelters/${prefecture}`);
+
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error('避難所情報の取得に失敗しました');
     }
-    
-    // JSON形式のレスポンスをパース
+
     const data = await response.json();
-    
-    // データをコンソールに出力（必要に応じて他の処理に変更可能）
-    console.log(data);
+    console.log("取得した避難所情報:", data);
+
   } catch (error) {
-    // エラーハンドリング
-    console.error('Fetch error:', error);
+    console.error("エラーが発生しました:", error);
+    console.log("エラーが発生しました。");
   }
 }
   
