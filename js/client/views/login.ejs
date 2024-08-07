@@ -4,143 +4,172 @@
     <meta charset="UTF-8">
     <title>ログイン画面</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body, html {
-            height: 100vh;
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #f0f0f0;
-            overflow: hidden;
-        }
+      * {
+        box-sizing: border-box;
+      }
 
-        .container {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
+      *:focus {
+        outline: none;
+      }
 
+      body {
+        font-family: Arial;
+        background-color: #FFF;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
 
-        .button-container {
-            position: relative;
-            width: 85%;
-            z-index: 2;
-            padding: 25px;
-            background: rgb(207, 207, 207);
-            border-radius: 50px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            animation: fadeIn 1s ease-out;
-        }
+      .background {
+        background-color: #BF0000;
+        padding: 40px 20px;
+        width: 100%;
+        max-width: 530px;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+      .login {
+        margin: 0 auto;
+        width: 100%;
+        max-width: 480px;
+      }
 
-        .button {
-            width: 100%;
-            padding: 40px 140px;
-            margin: 20px 0;
-            background-color: white;
-            border: none;
-            border-radius: 22px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            cursor: pointer;
-            font-size: 32px;
-            font-weight: bold;
-            text-align: center;
-            transition: all 0.3s ease;
-            white-space: nowrap; /* Prevents line breaks */
-        }
+      .login-screen {
+        background-color: #FFF;
+        padding: 30px;
+        border-radius: 40px; /* Further increased border-radius for more rounded corners */
+        text-align: center;
+      }
 
-        .button:hover {
-            background-color: #f0f0f0;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
+      .app-title {
+        text-align: center;
+        color: #777;
+        font-size: 1.5em;
+        margin: 20px 0;
+      }
 
-        @media (orientation: portrait) {
-            .map {
-                width: 100vw; /* Ensure it fills the viewport width */
-                height: 56.25vw; /* Maintain aspect ratio */
-            }
-        }
+      .login-form {
+        text-align: center;
+      }
+
+      .control-group {
+        margin-bottom: 15px;
+      }
+
+      input {
+        text-align: center;
+        background-color: #ECF0F1;
+        border: 2px solid transparent;
+        border-radius: 25px; /* Further increased border-radius for inputs */
+        font-size: 1.2em;
+        font-weight: bold;
+        padding: 15px 0;
+        width: 100%;
+        transition: border .5s;
+      }
+
+      input:focus {
+        border: 2px solid #BF0000;
+        box-shadow: none;
+      }
+
+      .btn {
+        border: 2px solid transparent;
+        background: #BF0000;
+        color: #ffffff;
+        font-size: 1.2em;
+        line-height: 30px;
+        padding: 15px 0;
+        text-decoration: none;
+        text-shadow: none;
+        border-radius: 25px; /* Further increased border-radius for button */
+        box-shadow: none;
+        transition: 0.25s;
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        background-color: #7d0000;
+      }
+
+      .login-link {
+        font-size: 1em;
+        color: #444;
+        display: block;
+        margin-top: 15px;
+      }
+
+      .logo {
+        width: 150px;
+        height: auto;
+        margin-bottom: 20px;
+      }
+
+      .error-message {
+        color: red;
+        margin-top: 10px;
+        display: none;
+      }
     </style>
     <script>
-      function sendLocationToServer(position) {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-  
-        fetch('/Button2Map', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            latitude: latitude,
-            longitude: longitude
-          })
-        })
-        .then(response => response.text())
-        .then(data => {
-          console.log(data);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-      }
-  
-      function getLocation() {
-        if ("geolocation" in navigator) {
-          navigator.geolocation.getCurrentPosition(sendLocationToServer, showError);
+      function validateLogin(event) {
+        event.preventDefault(); // Prevent the form from submitting immediately
+
+        var username = document.getElementById('login-name').value;
+        var password = document.getElementById('login-pass').value;
+        var errorMessage = document.getElementById('error-message');
+
+        // if (username === 'Rakuten' && password === 'rakuten2024') {
+        if (username === 'r' && password === 'r') {
+          // Submit the form programmatically
+          document.getElementById('login-form').submit();
         } else {
-          alert('Geolocation is not supported by this browser.');
-        }
-      }
-  
-      function showError(error) {
-        switch(error.code) {
-          case error.PERMISSION_DENIED:
-            alert('User denied the request for Geolocation.');
-            break;
-          case error.POSITION_UNAVAILABLE:
-            alert('Location information is unavailable.');
-            break;
-          case error.TIMEOUT:
-            alert('The request to get user location timed out.');
-            break;
-          case error.UNKNOWN_ERROR:
-            alert('An unknown error occurred.');
-            break;
+          errorMessage.style.display = 'block';
         }
       }
     </script>
 </head>
 <body>
-  <p><img src="safety_log_touka.PNG" alt="よくある質問ページへ"></p>
-
-  <h1>Welcome to <%= title %> page!</h1>
-    <div class="container">
-        <div class="map"></div>
-        <div class="button-container">
-            <!-- Each form has its own action but shares the same button style -->
-            <form action="/Button2View" method="POST">
-                <button onclick="getLocation()" type="submit" name="action" value="map" class="button">ログイン</button>
-            </form>
+  <div class="background">
+    <div class="login">
+      <div class="login-screen">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTR6lAibU6qgR8I0928XIyRnUr8Fs_YD0SdxQ&s" alt="Logo" class="logo">
+        
+        <div class="app-title">
+          <h1>楽天会員ログイン</h1>
         </div>
+
+        <div class="login-form">
+          <form id="login-form" action="/Button2View" method="POST">
+            <div class="control-group">
+              <input type="text" class="login-field" placeholder="ユーザID" id="login-name">
+              <label class="login-field-icon fui-user" for="login-name"></label>
+            </div>
+
+            <div class="control-group">
+              <input type="password" class="login-field" placeholder="パスワード" id="login-pass">
+              <label class="login-field-icon fui-lock" for="login-pass"></label>
+            </div>
+
+            <button onclick="validateLogin(event)" class="btn btn-primary btn-large btn-block">ログイン</button>
+            <div id="error-message" class="error-message">ユーザIDもしくはパスワードが間違っています</div>
+          </form>
+
+          <a class="login-link" href="https://grp01.id.rakuten.co.jp/rms/nid/registfwd?service_id=top">楽天アカウントを新規作成</a>
+        </div>
+      </div>
     </div>
+  </div>
 </body>
 </html>
