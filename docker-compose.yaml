@@ -38,6 +38,7 @@ services:
     image: mongo
     ports:
       - "27017:27017"
+    restart: always
     volumes:
       - ./db/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
 

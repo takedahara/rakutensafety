@@ -5,7 +5,7 @@ const authRoutes = require('./routes/auth');
 
 const app = express();
 const port = process.env.PORT || 4000;
-const mongoURI = process.env.MONGO_URI || "mongodb://localhost:27017/shelter";
+const mongoURI = process.env.MONGO_URI || "mongodb://mongo:27017/shelter";
 
 // MongoDBに接続
 mongoose.connect(mongoURI)
