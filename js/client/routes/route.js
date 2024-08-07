@@ -3,7 +3,7 @@ const router = express.Router();
 const homeController = require('../controllers/controller');
 
 // ホームページのルート
-router.get('/', homeController.index);
+router.get('/view', homeController.index);
 
 // 地図へのボタン
 router.post('/Button2Map', homeController.Button2Map);
