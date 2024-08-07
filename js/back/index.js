@@ -18,6 +18,7 @@ mongoose.connect(mongoURI)
   .catch((error) => console.error("MongoDBの接続エラー:", error));
 
 // スキーマとモデルの定義
+// 避難所スキーマ
 const shelterSchema = new mongoose.Schema({
   id: Number,
   name: String,
@@ -25,11 +26,8 @@ const shelterSchema = new mongoose.Schema({
   capacity: Number,
   food: Number,
   water: Number,
-  medicine1: String,
-  medicine2: String,
-  medicine3: String,
+  medicines: { type: Map, of: String }, // 薬の在庫情報をMapで管理
 });
-
 // 修正: モデル名とコレクション名の確認
 const Shelter = mongoose.model("Shelter", shelterSchema, "shelter_info");
 
@@ -40,10 +38,9 @@ const personSchema = new mongoose.Schema({
   name: String,
   birthDate: Date,
   gender: String,
-  requiredMedicine: String,
-  medicinePerDay: Number,
-  shelterId: Number, // 避難所IDと関連付け
-});
+  medicinePerDay: Object, // 各薬の1日当たりの必要量をオブジェクトで管理
+  shelterId: Number,
+}); 
 
 const Person = mongoose.model("Person", personSchema, "people_info");
 
@@ -120,7 +117,53 @@ app.get("/people/:shelterId", async (req, res) => {
   }
 });
 
+// 避難所IDに基づいて薬の在庫情報と需要を取得するエンドポイント
+app.get("/shelters/:id/medicine-stats", async (req, res) => {
+  try {
+    const shelterId = parseInt(req.params.id, 10);
+    const shelter = await Shelter.findOne({ id: shelterId });
 
+    if (!shelter) {
+      return res.status(404).send("避難所が見つかりません");
+    }
+
+    const people = await Person.find({ shelterId });
+
+    // 各薬の1日の需要量を計算
+    const demand = {};
+
+    people.forEach(person => {
+      const medicinePerDay = person.medicinePerDay || {};
+      for (const medicine in medicinePerDay) {
+        demand[medicine] = (demand[medicine] || 0) + medicinePerDay[medicine];
+      }
+    }); 
+    // 各薬の在庫量
+    const stock = {};
+
+    for (const [medicine, amount] of shelter.medicines.entries()) {
+      stock[medicine] = parseInt(amount, 10);
+      // デフォルト値を設定
+      if (!(medicine in demand)) {
+        demand[medicine] = 0;
+      }
+    }
+
+    // 各薬が何日持つかを計算
+    const daysSupply = {};
+
+    for (const medicine in stock) {
+      daysSupply[medicine] = demand[medicine] > 0
+        ? Math.floor(stock[medicine] / demand[medicine])
+        : "無限";
+    }
+
+    res.json({ stock, demand, daysSupply });
+  } catch (error) {
+    console.error("エラーが発生しました:", error);
+    res.status(500).send("エラーが発生しました");
+  }
+});
 
 
 
