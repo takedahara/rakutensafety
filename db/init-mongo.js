@@ -183,7 +183,10 @@ db.shelter_info.insertMany([
     {
         id: 7,
         name: "避難所G",
-        location: "市区町村U",
+        location: {
+          latitude: 33.5904,
+          longitude: 130.4017
+        },
         prefecture: "Fukuoka",
         capacity: 220,
         food: 80,
@@ -191,6 +194,23 @@ db.shelter_info.insertMany([
         medicines: {
           medicine1: 55,
           medicine2: 45,
+          medicine3: 35,
+        }
+      },
+      {
+        id: 8,
+        name: "避難所H",
+        location: {
+          latitude: 33.5904,
+          longitude: 130.40
+        },
+        prefecture: "Fukuoka",
+        capacity: 220,
+        food: 60,
+        water: 70,
+        medicines: {
+          medicine1: 25,
+          medicine2: 25,
           medicine3: 35,
         }
       }
@@ -223,5 +243,3 @@ db.users.insertMany([
         password: "pass1234"
     }
 ])
-
-
