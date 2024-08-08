@@ -4,6 +4,8 @@ exports.index = (req, res) => {
 
 exports.Registration = async (req, res) => {
 
+  console.log(req.body);
+
   try {
     const response = await fetch(`http://backend:4001/shelters`, {
       method: 'POST',
@@ -13,17 +15,17 @@ exports.Registration = async (req, res) => {
       body: JSON.stringify({
         name: req.body.shelterName,
         location: {
-          latitude: req.body.latitude,
-          longitude: req.body.longitude
+          latitude: req.body.location.latitude,
+          longitude: req.body.location.longitude
         },
         prefecture: req.body.prefecture,
         capacity: req.body.capacity,
         food: req.body.food,
         water: req.body.water,
         medicines: {
-            medicine1: req.body.medicine1,
-            medicine2: req.body.medicine2,
-            medicine3: req.body.medicine3
+            medicine1: req.body.medicines.medicine1,
+            medicine2: req.body.medicines.medicine2,
+            medicine3: req.body.medicines.medicine3
         }
     })
     });

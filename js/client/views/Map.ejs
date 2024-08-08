@@ -6,7 +6,7 @@
     </script>
     <style>
       #map {
-        height: 100%;
+        height: calc(100% - 160px); /* Adjust height to accommodate image */
       }
 
       html,
@@ -14,6 +14,19 @@
         height: 100%;
         margin: 0;
         padding: 0;
+      }
+
+      /* Header image */
+      .header-image {
+        width: 100%;
+        height: 150px; /* Set height for the image */
+        background-color: #f0f0f0; /* Fallback background color */
+      }
+
+      .header-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
 
       /* ポップアップスタイル */
@@ -24,9 +37,8 @@
         width: 100%;
         max-height: 800px; /* ポップアップの最大高さ */
         background-color: white;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
         transition: bottom 0.3s;
-        padding: 20px;
+        padding: 10px; /* Reduced padding */
         box-sizing: border-box;
         z-index: 1000;
         overflow-y: auto;
@@ -39,24 +51,30 @@
       .popup-content {
         max-width: 1200px; /* Increased width for layout */
         margin: 0 auto;
-        font-size: 48px; /* Double the original font size for larger text */
-        line-height: 1.5;
+        font-size: 50px; /* Increased font size for better readability */
+        line-height: 1.2; /* Reduced line height */
         display: grid;
         grid-template-columns: 1fr 1fr; /* Two-column layout */
-        gap: 40px;
+        gap: 10px; /* Further reduced gap between columns */
       }
 
       .popup-content h2 {
-        font-size: 70px; /* Double the original font size for headings */
-        margin-bottom: 10px;
+        font-size: 80px; /* Increased font size for headings */
+        margin: 0; /* Removed margin */
+        padding: 5px 0; /* Reduced padding */
         grid-column: span 2; /* Make header span both columns */
         text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100px; /* Adjust height to center vertically */
       }
 
       .popup-content .section {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 5px; /* Reduced gap between elements */
+        margin-bottom: 5px; /* Reduced margin between sections */
       }
 
       .popup-content table {
@@ -66,15 +84,25 @@
 
       .popup-content th, .popup-content td {
         border: 1px solid #ccc;
-        padding: 10px;
+        padding: 4px 6px; /* Reduced padding for less horizontal space */
         text-align: left;
-        font-size: 48px;
+        font-size: 48px; /* Increased font size for table */
+        white-space: nowrap; /* Prevent line breaks */
+      }
+
+      .popup-content th {
+        background-color: #f7f7f7; /* Header background color */
+        font-weight: bold;
+      }
+
+      .popup-content td {
+        min-width: 150px; /* Minimum width for table cells */
       }
 
       /* Button styles */
       .button-container {
         position: absolute;
-        top: 20px;
+        top: 180px; /* Adjusted top to be below the image */
         left: 50%;
         transform: translateX(-50%);
         display: flex;
@@ -82,22 +110,28 @@
       }
 
       .back-button, .home2-button {
-        background-color: white;
-        border: 2px solid #ccc;
+        background-color: #ffffff; /* Changed background color */
+        border: 6px solid #BF0000; /* Set border color to match text color */
         padding: 30px 60px; /* Increased padding for larger buttons */
-        font-size: 30px; /* Larger font size */
+        font-size: 50px; /* Larger font size */
         font-weight: bold; /* Bold text */
+        color: #BF0000; /* Changed text color */
+        line-height: 30px; /* Adjusted line height */
+        text-decoration: none; /* Removed underline from text */
+        text-shadow: none; /* Removed text shadow */
         cursor: pointer;
         z-index: 1000;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        border-radius: 30px; /* More rounded corners */
+        border-radius: 45px; /* Increased border-radius for rounded corners */
+        transition: 0.25s;
+        display: block;
+        width: auto;
         white-space: nowrap; /* Prevent text from wrapping */
-        transition: background-color 0.3s, color 0.3s;
+        margin: 0 auto;
       }
 
       .back-button:hover, .home2-button:hover {
         background-color: #f0f0f0;
-        color: #333;
+        color: #BF0000;
       }
     </style>
     <script>
@@ -258,7 +292,7 @@
             <div class="section">
               <h3>薬一覧</h3>
               <table>
-                <tr><th>薬名</th><th>在庫</th><th>需要</th><th>供給日数</th></tr>
+                <tr><th>薬名</th><th>備蓄量</th><th>需要</th><th>供給日数</th></tr>
                 <tr><td>薬1</td><td>${data.stock.medicine1}</td><td>${data.demand.medicine1}</td><td>${data.daysSupply.medicine1}</td></tr>
                 <tr><td>薬2</td><td>${data.stock.medicine2}</td><td>${data.demand.medicine2}</td><td>${data.daysSupply.medicine2}</td></tr>
                 <tr><td>薬3</td><td>${data.stock.medicine3}</td><td>${data.demand.medicine3}</td><td>${data.daysSupply.medicine3}</td></tr>
@@ -339,7 +373,10 @@
     </script>
   </head>
   <body>
-    <div id="map" style="height: 100%;"></div>
+    <div class="header-image">
+      <img src="http://localhost:5500/js/client/image/safety_log.jpg" alt="Safety Logo">
+    </div>
+    <div id="map"></div>
     <div id="popup" class="popup"></div>
     <div class="button-container">
       <div class="back-button" onclick="goBack()">ホームへ</div>
