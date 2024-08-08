@@ -79,15 +79,16 @@
             color: #BF0000;
             font-size: 1.2em;
             line-height: 30px;
-            padding: 15px 0;
+            padding: 12px 0; /* Reduced padding by 20% */
             text-decoration: none;
             text-shadow: none;
             border-radius: 25px;
             box-shadow: none;
             transition: 0.25s;
             display: block;
-            width: 100%;
-            margin: 20px auto;
+            width: 60%;
+            max-width: 200px;
+            margin: 16px auto; /* Reduced margin by 20% */
             font-weight: bold;
             cursor: pointer;
         }
@@ -107,11 +108,18 @@
                 transform: translateY(0);
             }
         }
+        
+        .image-container {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="background">
         <div class="form-container">
+            <div class="image-container">
+                <img src="http://localhost:5500/js/client/image/safety_log.jpg" alt="Safety Log Image" width="100%">
+            </div>
             <h1>避難所情報を登録</h1>
             <form id="shelterForm">
                 <label for="shelterName">避難所名</label>
@@ -166,7 +174,7 @@
                     <option value="Oita">大分県</option>
                     <option value="Miyazaki">宮崎県</option>
                     <option value="Kagoshima">鹿児島県</option>
-                    <option value="Okinawa">沖縄県</option>
+                    <option value="Okinawa">沖縄県</option>                    
                 </select>
 
                 <label for="latitude">緯度</label>
@@ -203,7 +211,6 @@
 
             event.preventDefault();
 
-    
             const requiredFields = document.querySelectorAll('#shelterForm [required]');
             let allFilled = true;
 
@@ -261,8 +268,8 @@
             })
             .then(data => {
                 console.log('登録が完了しました');
-                console.log(data);
                 window.location.href = '/Map';
+                console.log(data);
             })
             .catch(error => {
                 console.log('エラーが発生しました: ' + error.message);
@@ -271,6 +278,3 @@
     </script>
 </body>
 </html>
-
-
-

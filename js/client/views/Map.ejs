@@ -6,7 +6,7 @@
     </script>
     <style>
       #map {
-        height: calc(100% - 160px); /* Adjust height to accommodate image */
+        height: calc(100% - 220px); /* Adjust height to accommodate increased header */
       }
 
       html,
@@ -14,30 +14,34 @@
         height: 100%;
         margin: 0;
         padding: 0;
+        background-color: white; /* Set background color to white */
       }
 
       /* Header image */
       .header-image {
         width: 100%;
-        height: 150px; /* Set height for the image */
-        background-color: #f0f0f0; /* Fallback background color */
+        height: 160px; /* Height of the white area */
+        background-color: white; /* Set background color to white */
+        margin-top: 0; /* Remove extra margin */
+        display: flex;
+        justify-content: center; /* Center the image horizontally */
+        align-items: center; /* Center the image vertically */
       }
 
       .header-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        height: 65%; /* Adjusted height for the logo */
+        object-fit: contain; /* Maintain aspect ratio */
       }
 
       /* ポップアップスタイル */
       .popup {
         position: fixed;
-        bottom: -200px; /* 初期位置は画面外 */
+        bottom: -100%; /* Position the popup fully outside the screen initially */
         left: 0;
         width: 100%;
-        max-height: 800px; /* ポップアップの最大高さ */
+        max-height: 800px; /* Max height of the popup */
         background-color: white;
-        transition: bottom 0.3s;
+        transition: bottom 0.3s ease-out; /* Smooth transition */
         padding: 10px; /* Reduced padding */
         box-sizing: border-box;
         z-index: 1000;
@@ -45,7 +49,7 @@
       }
 
       .popup.show {
-        bottom: 0;
+        bottom: 0; /* Bring the popup into view */
       }
 
       .popup-content {
@@ -99,10 +103,35 @@
         min-width: 150px; /* Minimum width for table cells */
       }
 
+      /* Close button styles */
+      .close-button {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        width: 60px; /* Set width for circular button */
+        height: 60px; /* Set height for circular button */
+        background-color: transparent; /* No background color */
+        color: #FF0000; /* Text color */
+        border: 4px solid #FF0000; /* Border color */
+        border-radius: 50%; /* Make it circular */
+        font-size: 40px; /* Font size for the '×' */
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        z-index: 1001;
+        transition: 0.25s;
+      }
+
+      .close-button:hover {
+        border-color: #CC0000; /* Change border color on hover */
+      }
+
       /* Button styles */
       .button-container {
         position: absolute;
-        top: 180px; /* Adjusted top to be below the image */
+        top: 230px; /* Adjusted top to be further below the image */
         left: 50%;
         transform: translateX(-50%);
         display: flex;
@@ -216,7 +245,6 @@
 
           const ret = {
             name: data.name,
-            currentpeople: data.currentpeople,
             prefecture: data.prefecture,
             capacity: data.capacity,
             food: data.food,
@@ -280,6 +308,7 @@
       function showPopup(data) {
         const popup = document.getElementById('popup');
         popup.innerHTML = `
+          <button class="close-button" onclick="hidePopup()">×</button>
           <div class="popup-content">
             <h2>${data.name}</h2>
             <div class="section">
