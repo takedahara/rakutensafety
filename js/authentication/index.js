@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // MongoDBの接続URL
-const mongoURI = process.env.MONGO_URI || "mongodb://mongo:27017/shelter";
+const mongoURI = process.env.MONGO_URI || "mongodb://pass-mongo:27018/shelter";
 
 // MongoDBに接続
 mongoose.connect(mongoURI)

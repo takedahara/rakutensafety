@@ -42,5 +42,13 @@ services:
     volumes:
       - ./db/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
 
+  pass-mongo:
+    image: mongo
+    ports:
+      - "27018:27018"
+    restart: always
+    volumes:
+      - ./db/pass-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+
 volumes:
   mongo-data:
