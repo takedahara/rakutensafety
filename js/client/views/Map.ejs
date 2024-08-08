@@ -108,17 +108,38 @@
           data.forEach(shelter => {
             const latitude = shelter.location.latitude;
             const longitude = shelter.location.longitude;
+            const shelterid = shelter.id;
 
             // マーカーを追加する関数を呼び出す
-            addMarker(latitude, longitude);
+            addMarker(latitude, longitude, shelterid);
           });
         }
 
-        console.log("取得した避難所情報:", data);
+        // console.log("取得した避難所情報:", data);
+      }
+
+      function getShelterInfo(id){
+            
+        fetch('/shelterInfo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            shelterid: id
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
       }
 
 
-      function addMarker(latitude, longitude, accuracy, info) {
+      function addMarker(latitude, longitude, shelterid) {
         const location = new google.maps.LatLng(latitude, longitude);
 
         const marker = new google.maps.Marker({
@@ -130,19 +151,20 @@
           }
         });
 
-        const accuracyCircle = new google.maps.Circle({
-          map: map,
-          radius: accuracy,
-          center: location,
-          fillColor: '#FF6347',
-          fillOpacity: 0.2,
-          strokeColor: '#FF6347',
-          strokeOpacity: 0.4,
-          strokeWeight: 2
-        });
+        // const accuracyCircle = new google.maps.Circle({
+        //   map: map,
+        //   radius: accuracy,
+        //   center: location,
+        //   fillColor: '#FF6347',
+        //   fillOpacity: 0.2,
+        //   strokeColor: '#FF6347',
+        //   strokeOpacity: 0.4,
+        //   strokeWeight: 2
+        // });
 
         marker.addListener('click', () => {
-          showPopup(info);
+          getShelterInfo(shelterid);
+          showPopup();
         });
       }
 
@@ -200,9 +222,9 @@
         }
       }
 
-      function showPopup(info) {
+      function showPopup() {
         const popup = document.getElementById('popup');
-        popup.innerHTML = `<div class="popup-content">${info}</div>`;
+        popup.innerHTML = `<div class="popup-content">un</div>`;
         popup.classList.add('show');
 
       }

@@ -67,8 +67,8 @@ app.get("/shelters/:prefecture", async (req, res) => {
 // 新しい避難所情報を追加するエンドポイント
 app.post("/shelters", async (req, res) => {
   try {
-    const { id, name, prefecture, capacity, food, water, medicine1, medicine2, medicine3 } = req.body;
-    const newShelter = new Shelter({ id, name, prefecture, capacity, food, water, medicine1, medicine2, medicine3 });
+    const { id, name, prefecture, capacity, food, water, medicines } = req.body;
+    const newShelter = new Shelter({ id, name, prefecture, capacity, food, water, medicines });
     await newShelter.save();
     res.status(201).send(newShelter);
   } catch (error) {
@@ -132,12 +132,13 @@ app.get("/shelters/:id/medicine-stats", async (req, res) => {
     // 各薬の1日の需要量を計算
     const demand = {};
 
-    people.forEach(person => {
+    people.forEach((person) => {
       const medicinePerDay = person.medicinePerDay || {};
       for (const medicine in medicinePerDay) {
         demand[medicine] = (demand[medicine] || 0) + medicinePerDay[medicine];
       }
-    }); 
+    });
+
     // 各薬の在庫量
     const stock = {};
 
@@ -153,12 +154,28 @@ app.get("/shelters/:id/medicine-stats", async (req, res) => {
     const daysSupply = {};
 
     for (const medicine in stock) {
-      daysSupply[medicine] = demand[medicine] > 0
-        ? Math.floor(stock[medicine] / demand[medicine])
-        : "無限";
+      daysSupply[medicine] =
+        demand[medicine] > 0
+          ? Math.floor(stock[medicine] / demand[medicine])
+          : "無限";
     }
 
-    res.json({ stock, demand, daysSupply });
+    // 避難所情報と薬の統計情報をまとめて返す
+    const response = {
+      id: shelter.id,
+      name: shelter.name,
+      location: shelter.location,
+      prefecture: shelter.prefecture,
+      capacity: shelter.capacity,
+      food: shelter.food,
+      water: shelter.water,
+      medicines: shelter.medicines,
+      stock,
+      demand,
+      daysSupply,
+    };
+
+    res.json(response);
   } catch (error) {
     console.error("エラーが発生しました:", error);
     res.status(500).send("エラーが発生しました");
@@ -173,5 +190,4 @@ const PORT = process.env.PORT || 4001;
 app.listen(PORT, () => {
   console.log(`server listening on port${PORT}.`);
 });
-
 
