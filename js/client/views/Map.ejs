@@ -299,6 +299,13 @@
                 <tr><td>薬3</td><td>${data.stock.medicine3}</td><td>${data.demand.medicine3}</td><td>${data.daysSupply.medicine3}</td></tr>
               </table>
             </div>
+            <div class="section">
+              <div style="display: flex; align-items: center;">
+                <p>${data.currentpeople}</p>
+                <span style="margin: 0 5px;">/</span>
+                <p>${data.capacity}</p>
+              </div>
+            </div>
           </div>`;
         popup.classList.add('show');
       }
