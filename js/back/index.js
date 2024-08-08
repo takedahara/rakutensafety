@@ -183,6 +183,7 @@ app.get("/shelters/:id/medicine-stats", async (req, res) => {
     // 避難所情報と薬の統計情報をまとめて返す
     const response = {
       id: shelter.id,
+      currentpeople: people.length,
       name: shelter.name,
       location: shelter.location,
       prefecture: shelter.prefecture,
