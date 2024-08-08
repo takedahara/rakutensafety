@@ -115,7 +115,7 @@
   <script>
     function goBack() {
       // Perform the desired action, e.g., navigating back
-      window.history.back();
+      window.location.href = '/';
     }
   </script>
   <div class="background">
@@ -125,10 +125,10 @@
       <form action="/Map" method="get">
         <button type="submit" name="action" value="map" class="button">地図へ</button>
       </form>
-      <form action="https://pharmacy.healthcare.rakuten.co.jp/" method="get" target="_blank">
+      <form action="https://pharmacy.healthcare.rakuten.co.jp/" method="get">
         <button type="submit" name="action" value="healthcare" class="button">ヘルスケアへ</button>
       </form>
-      <form action="https://network.mobile.rakuten.co.jp/info/disaster/" method="get" target="_blank">
+      <form action="https://network.mobile.rakuten.co.jp/info/disaster/" method="get">
         <button type="submit" name="action" value="safety" class="button">安否確認へ</button>
       </form>
     </div>
