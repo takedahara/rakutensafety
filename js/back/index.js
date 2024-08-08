@@ -22,7 +22,6 @@ mongoose.connect(mongoURI)
 const shelterSchema = new mongoose.Schema({
   id: Number,
   name: String,
-  location: { latitude: Number, longitude: Number },
   prefecture: String,
   capacity: Number,
   food: Number,
@@ -70,8 +69,6 @@ app.post("/shelters", async (req, res) => {
   try {
     const { name, location, prefecture, capacity, food, water, medicines } = req.body;
 
-    console.log("Received request body:", req.body);
-
     // 現在の最大のIDを取得
     const maxShelter = await Shelter.findOne().sort({ id: -1 }).exec();
     const newId = maxShelter ? maxShelter.id + 1 : 1;
@@ -79,15 +76,16 @@ app.post("/shelters", async (req, res) => {
     const newShelter = new Shelter({
       id: newId,
       name: name,
-      location: location,
+      location: {
+        latitude: location.latitude,
+        longitude: location.longitude
+      },
       prefecture: prefecture,
       capacity: capacity,
       food: food,
       water: water,
       medicines: medicines
     });
-
-    console.log("Saving new shelter:", newShelter);
 
     await newShelter.save();
     res.status(201).send("新しい避難所が追加されました");
@@ -96,7 +94,6 @@ app.post("/shelters", async (req, res) => {
     res.status(500).send("避難所の追加中にエラーが発生しました");
   }
 });
-
 
 
 // 避難所IDに基づいて避難所情報を取得するエンドポイント
@@ -210,4 +207,3 @@ const PORT = process.env.PORT || 4001;
 app.listen(PORT, () => {
   console.log(`server listening on port${PORT}.`);
 });
-
