@@ -130,13 +130,31 @@
         var password = document.getElementById('login-pass').value;
         var errorMessage = document.getElementById('error-message');
 
-        // if (username === 'Rakuten' && password === 'rakuten2024') {
-        if (username === 'r' && password === 'r') {
-          // Submit the form programmatically
-          document.getElementById('login-form').submit();
-        } else {
-          errorMessage.style.display = 'block';
-        }
+        // console.log(username);
+
+        fetch('/ValidateLogin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          rakutenid: username,
+          password: password
+        })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          console.log(data.message)
+          if (data.message === 'Login successful') {
+            window.location.href = '/Button2View';
+          } else {
+            errorMessage.style.display = 'block';
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        })
       }
     </script>
 </head>
@@ -151,7 +169,7 @@
         </div>
 
         <div class="login-form">
-          <form id="login-form" action="/Button2View" method="get">
+          <form id="login-form" action="/ValidateLogin" method="post">
             <div class="control-group">
               <input type="text" class="login-field" name="loginName" placeholder="ユーザID" id="login-name">
               <label class="login-field-icon fui-user" for="login-name"></label>

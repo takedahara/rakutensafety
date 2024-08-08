@@ -95,7 +95,7 @@
         sendLocationToServer(latitude, longitude);
 
         // Fetch additional locations from the server and add markers
-        fetchLocations();
+        // fetchLocations();
 
         // マップクリックイベントリスナーを追加
         map.addListener('click', () => {
@@ -103,20 +103,20 @@
         });
       }
 
-      function fetchLocations() {
-        fetch('/GetLocations')
-          .then(response => response.json())
-          .then(data => {
-            if (data.locations && data.locations.length > 0) {
-              data.locations.forEach(location => {
-                addMarker(location.latitude, location.longitude, location.accuracy, location.info);
-              });
-            }
-          })
-          .catch(error => {
-            console.error('Error fetching locations:', error);
+      function fetchLocations(data) {
+        if (data && data.length > 0) {
+          data.forEach(shelter => {
+            const latitude = shelter.location.latitude;
+            const longitude = shelter.location.longitude;
+
+            // マーカーを追加する関数を呼び出す
+            addMarker(latitude, longitude);
           });
+        }
+
+        console.log("取得した避難所情報:", data);
       }
+
 
       function addMarker(latitude, longitude, accuracy, info) {
         const location = new google.maps.LatLng(latitude, longitude);
@@ -147,6 +147,8 @@
       }
 
       function sendLocationToServer(latitude, longitude) {
+        console.log('sending location to server');
+
         fetch('/CurrentLocation', {
           method: 'POST',
           headers: {
@@ -157,9 +159,10 @@
             longitude: longitude
           })
         })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
           console.log(data);
+          fetchLocations(data);
         })
         .catch(error => {
           console.error('Error:', error);
@@ -202,11 +205,6 @@
         popup.innerHTML = `<div class="popup-content">${info}</div>`;
         popup.classList.add('show');
 
-        // ボタンを上に移動
-        const zoomControl = document.querySelector('.gm-bundled-control .gm-bundled-control-on-bottom');
-        if (zoomControl) {
-          zoomControl.style.bottom = 'calc(20px + 300px)'; // ポップアップの高さに応じて調整
-        }
       }
 
       function hidePopup() {
