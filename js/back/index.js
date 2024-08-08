@@ -177,7 +177,7 @@ app.get("/shelters/:id/medicine-stats", async (req, res) => {
       daysSupply[medicine] =
         demand[medicine] > 0
           ? Math.floor(stock[medicine] / demand[medicine])
-          : "無限";
+          : "NA";
     }
 
     // 避難所情報と薬の統計情報をまとめて返す

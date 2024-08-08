@@ -40,12 +40,14 @@
         left: 0;
         width: 100%;
         max-height: 800px; /* Max height of the popup */
-        background-color: white;
+        background-color: #f9f9f9; /* Soft background color */
         transition: bottom 0.3s ease-out; /* Smooth transition */
-        padding: 10px; /* Reduced padding */
+        padding: 30px 20px; /* Increased padding at the top for more white space */
         box-sizing: border-box;
         z-index: 1000;
         overflow-y: auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
+        border-radius: 10px; /* Rounded corners */
       }
 
       .popup.show {
@@ -53,61 +55,67 @@
       }
 
       .popup-content {
-        max-width: 1200px; /* Increased width for layout */
+        max-width: 1000px; /* Adjust width for better fit */
         margin: 0 auto;
-        font-size: 50px; /* Increased font size for better readability */
-        line-height: 1.2; /* Reduced line height */
+        font-size: 36px; /* Reduced font size for better fit */
+        line-height: 1.4; /* Reduced line height */
         display: grid;
         grid-template-columns: 1fr 1fr; /* Two-column layout */
-        gap: 10px; /* Further reduced gap between columns */
+        gap: 20px; /* Further reduced gap between columns */
+        background-color: #ffffff; /* White background for content */
+        padding: 20px;
+        border-radius: 10px; /* Rounded corners for content */
       }
 
       .popup-content h2 {
-        font-size: 80px; /* Increased font size for headings */
+        font-size: 60px; /* Increased font size for headings */
         margin: 0; /* Removed margin */
-        padding: 5px 0; /* Reduced padding */
+        padding: 10px 0; /* Reduced padding */
         grid-column: span 2; /* Make header span both columns */
         text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100px; /* Adjust height to center vertically */
+        color: #333; /* Darker text color */
       }
 
       .popup-content .section {
         display: flex;
         flex-direction: column;
-        gap: 5px; /* Reduced gap between elements */
-        margin-bottom: 5px; /* Reduced margin between sections */
+        gap: 8px; /* Reduced gap between elements */
+        margin: 0; /* Removed margin between sections */
       }
 
       .popup-content table {
         width: 100%;
         border-collapse: collapse;
+        background-color: #ffffff; /* Table background */
+        border-radius: 10px; /* Rounded corners for table */
+        overflow: hidden; /* Ensure corners stay rounded */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for table */
       }
 
       .popup-content th, .popup-content td {
-        border: 1px solid #ccc;
-        padding: 4px 6px; /* Reduced padding for less horizontal space */
+        border: 1px solid #ddd;
+        padding: 8px 10px; /* Reduced padding for cells */
         text-align: left;
-        font-size: 48px; /* Increased font size for table */
-        white-space: nowrap; /* Prevent line breaks */
+        font-size: 32px; /* Reduced font size for table */
+        color: #555; /* Softer text color */
+        white-space: nowrap; /* Prevent text from wrapping */
       }
 
       .popup-content th {
-        background-color: #f7f7f7; /* Header background color */
+        background-color: #f0f0f0; /* Header background color */
         font-weight: bold;
+        color: #333; /* Darker text color for header */
       }
 
       .popup-content td {
-        min-width: 150px; /* Minimum width for table cells */
+        min-width: 120px; /* Minimum width for table cells */
       }
 
       /* Close button styles */
       .close-button {
         position: absolute;
-        top: 10px;
-        right: 20px;
+        top: 30px; /* Moved button slightly lower */
+        left: 20px; /* Button positioned on the left side */
         width: 60px; /* Set width for circular button */
         height: 60px; /* Set height for circular button */
         background-color: transparent; /* No background color */
@@ -125,6 +133,7 @@
       }
 
       .close-button:hover {
+        background-color: #FFEEEE; /* Change background color on hover */
         border-color: #CC0000; /* Change border color on hover */
       }
 
@@ -184,7 +193,8 @@
           map: map,
           title: "Current Location",
           icon: {
-            url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+            url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+            scaledSize: new google.maps.Size(100, 100)
           }
         });
 
@@ -291,7 +301,8 @@
           map: map,
           title: "Location",
           icon: {
-            url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+            url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            scaledSize: new google.maps.Size(100, 100)
           }
         });
 
@@ -311,7 +322,7 @@
         popup.innerHTML = `
           <button class="close-button" onclick="hidePopup()">×</button>
           <div class="popup-content">
-            <h2>${data.name}</h2>
+            <h2>${data.name} (${data.currentpeople}人/${data.capacity}人)</h2>
             <div class="section">
               <h3>備蓄一覧</h3>
               <table>
@@ -328,13 +339,6 @@
                 <tr><td>薬2</td><td>${data.stock.medicine2}</td><td>${data.demand.medicine2}</td><td>${data.daysSupply.medicine2}</td></tr>
                 <tr><td>薬3</td><td>${data.stock.medicine3}</td><td>${data.demand.medicine3}</td><td>${data.daysSupply.medicine3}</td></tr>
               </table>
-            </div>
-            <div class="section">
-              <div style="display: flex; align-items: center;">
-                <p>${data.currentpeople}</p>
-                <span style="margin: 0 5px;">/</span>
-                <p>${data.capacity}</p>
-              </div>
             </div>
           </div>`;
         popup.classList.add('show');
@@ -401,7 +405,7 @@
 
       function goBack() {
         // Perform the desired action, e.g., navigating back
-        window.history.back();
+        window.location.href = '/Button2View';
       }
 
       function goaddpage() {
