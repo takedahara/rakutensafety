@@ -6,7 +6,7 @@
     </script>
     <style>
       #map {
-        height: 100%;
+        height: calc(100% - 160px); /* Adjust height to accommodate image */
       }
 
       html,
@@ -16,20 +16,32 @@
         padding: 0;
       }
 
+      /* Header image */
+      .header-image {
+        width: 100%;
+        height: 150px; /* Set height for the image */
+        background-color: #f0f0f0; /* Fallback background color */
+      }
+
+      .header-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
       /* ポップアップスタイル */
       .popup {
         position: fixed;
         bottom: -200px; /* 初期位置は画面外 */
         left: 0;
         width: 100%;
-        height: 200px; /* ポップアップの高さ */
-        max-height: 300px; /* ポップアップの最大高さ */
+        max-height: 800px; /* ポップアップの最大高さ */
         background-color: white;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
         transition: bottom 0.3s;
-        padding: 20px;
+        padding: 10px; /* Reduced padding */
         box-sizing: border-box;
         z-index: 1000;
+        overflow-y: auto;
       }
 
       .popup.show {
@@ -37,24 +49,90 @@
       }
 
       .popup-content {
-        max-width: 600px;
+        max-width: 1200px; /* Increased width for layout */
+        margin: 0 auto;
+        font-size: 50px; /* Increased font size for better readability */
+        line-height: 1.2; /* Reduced line height */
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Two-column layout */
+        gap: 10px; /* Further reduced gap between columns */
+      }
+
+      .popup-content h2 {
+        font-size: 80px; /* Increased font size for headings */
+        margin: 0; /* Removed margin */
+        padding: 5px 0; /* Reduced padding */
+        grid-column: span 2; /* Make header span both columns */
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100px; /* Adjust height to center vertically */
+      }
+
+      .popup-content .section {
+        display: flex;
+        flex-direction: column;
+        gap: 5px; /* Reduced gap between elements */
+        margin-bottom: 5px; /* Reduced margin between sections */
+      }
+
+      .popup-content table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .popup-content th, .popup-content td {
+        border: 1px solid #ccc;
+        padding: 4px 6px; /* Reduced padding for less horizontal space */
+        text-align: left;
+        font-size: 48px; /* Increased font size for table */
+        white-space: nowrap; /* Prevent line breaks */
+      }
+
+      .popup-content th {
+        background-color: #f7f7f7; /* Header background color */
+        font-weight: bold;
+      }
+
+      .popup-content td {
+        min-width: 150px; /* Minimum width for table cells */
+      }
+
+      /* Button styles */
+      .button-container {
+        position: absolute;
+        top: 180px; /* Adjusted top to be below the image */
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 30px;
+      }
+
+      .back-button, .home2-button {
+        background-color: #ffffff; /* Changed background color */
+        border: 6px solid #BF0000; /* Set border color to match text color */
+        padding: 30px 60px; /* Increased padding for larger buttons */
+        font-size: 50px; /* Larger font size */
+        font-weight: bold; /* Bold text */
+        color: #BF0000; /* Changed text color */
+        line-height: 30px; /* Adjusted line height */
+        text-decoration: none; /* Removed underline from text */
+        text-shadow: none; /* Removed text shadow */
+        cursor: pointer;
+        z-index: 1000;
+        border-radius: 45px; /* Increased border-radius for rounded corners */
+        transition: 0.25s;
+        display: block;
+        width: auto;
+        white-space: nowrap; /* Prevent text from wrapping */
         margin: 0 auto;
       }
 
-      /* Back button style */
-      .back-button {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        background-color: white;
-        border: 1px solid #ccc;
-        padding: 5px 10px;
-        cursor: pointer;
-        z-index: 1000;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      .back-button:hover, .home2-button:hover {
+        background-color: #f0f0f0;
+        color: #BF0000;
       }
-
-
     </style>
     <script>
       let map;
@@ -118,105 +196,62 @@
         // console.log("取得した避難所情報:", data);
       }
 
-  async function getShelterInfo(id) {
-  try {
-    const response = await fetch('/shelterInfo', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        shelterid: id
-      })
-    });
+      async function getShelterInfo(id) {
+        try {
+          const response = await fetch('/shelterInfo', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              shelterid: id
+            })
+          });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
 
-    const data = await response.json();
+          const data = await response.json();
 
-    const ret = {
-      name: data.name,
-      prefecture: data.prefecture,
-      capacity: data.capacity,
-      food: data.food,
-      water: data.water,
-      medicines: {
-        medicine1: data.medicines.medicine1,
-        medicine2: data.medicines.medicine2,
-        medicine3: data.medicines.medicine3
-      },
-      stock: {
-        medicine1: data.stock.medicine1,
-        medicine2: data.stock.medicine2,
-        medicine3: data.stock.medicine3
-      },
-      demand: {
-        medicine1: data.demand.medicine1,
-        medicine2: data.demand.medicine2,
-        medicine3: data.demand.medicine3
-      },
-      daysSupply: {
-        medicine1: data.daysSupply.medicine1,
-        medicine2: data.daysSupply.medicine2,
-        medicine3: data.daysSupply.medicine3
+          const ret = {
+            name: data.name,
+            prefecture: data.prefecture,
+            capacity: data.capacity,
+            food: data.food,
+            water: data.water,
+            medicines: {
+              medicine1: data.medicines.medicine1,
+              medicine2: data.medicines.medicine2,
+              medicine3: data.medicines.medicine3
+            },
+            stock: {
+              medicine1: data.stock.medicine1,
+              medicine2: data.stock.medicine2,
+              medicine3: data.stock.medicine3
+            },
+            demand: {
+              medicine1: data.demand.medicine1,
+              medicine2: data.demand.medicine2,
+              medicine3: data.demand.medicine3
+            },
+            daysSupply: {
+              medicine1: data.daysSupply.medicine1,
+              medicine2: data.daysSupply.medicine2,
+              medicine3: data.daysSupply.medicine3
+            }
+          };
+
+          console.log(data);
+          console.log(ret);
+
+          return ret;
+
+        } catch (error) {
+          console.error('Error:', error);
+          return null;
+        }
       }
-    };
-
-    console.log(data);
-    console.log(ret);
-
-    return ret;
-
-  } catch (error) {
-    console.error('Error:', error);
-    return null;
-  }
-}
-
-function addMarker(latitude, longitude, shelterid) {
-  const location = new google.maps.LatLng(latitude, longitude);
-
-  const marker = new google.maps.Marker({
-    position: location,
-    map: map,
-    title: "Location",
-    icon: {
-      url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-    }
-  });
-
-  marker.addListener('click', async () => {
-    const data = await getShelterInfo(shelterid);
-    if (data) {
-      console.log(data);
-      showPopup(data);
-    } else {
-      console.error('Failed to retrieve shelter info');
-    }
-  });
-}
-
-function showPopup(data) {
-  const popup = document.getElementById('popup');
-  popup.innerHTML = `
-    <div class="popup-content">
-      <h2>${data.name}</h2>
-      <p>Prefecture: ${data.prefecture}</p>
-      <p>Capacity: ${data.capacity}</p>
-      <p>Food: ${data.food}</p>
-      <p>Water: ${data.water}</p>
-      <p>Medicines:</p>
-      <ul>
-        <li>${data.medicines.medicine1}: Stock - ${data.stock.medicine1}, Demand - ${data.demand.medicine1}, Days Supply - ${data.daysSupply.medicine1}</li>
-        <li>${data.medicines.medicine2}: Stock - ${data.stock.medicine2}, Demand - ${data.demand.medicine2}, Days Supply - ${data.daysSupply.medicine2}</li>
-        <li>${data.medicines.medicine3}: Stock - ${data.stock.medicine3}, Demand - ${data.demand.medicine3}, Days Supply - ${data.daysSupply.medicine3}</li>
-      </ul>
-    </div>`;
-  popup.classList.add('show');
-}
-
 
       function addMarker(latitude, longitude, shelterid) {
         const location = new google.maps.LatLng(latitude, longitude);
@@ -230,17 +265,6 @@ function showPopup(data) {
           }
         });
 
-        // const accuracyCircle = new google.maps.Circle({
-        //   map: map,
-        //   radius: accuracy,
-        //   center: location,
-        //   fillColor: '#FF6347',
-        //   fillOpacity: 0.2,
-        //   strokeColor: '#FF6347',
-        //   strokeOpacity: 0.4,
-        //   strokeWeight: 2
-        // });
-
         marker.addListener('click', async () => {
           const data = await getShelterInfo(shelterid);
           if (data) {
@@ -250,7 +274,32 @@ function showPopup(data) {
             console.error('Failed to retrieve shelter info');
           }
         });
+      }
 
+      function showPopup(data) {
+        const popup = document.getElementById('popup');
+        popup.innerHTML = `
+          <div class="popup-content">
+            <h2>${data.name}</h2>
+            <div class="section">
+              <h3>備蓄一覧</h3>
+              <table>
+                <tr><th>アイテム</th><th>数量</th></tr>
+                <tr><td>食料</td><td>${data.food}</td></tr>
+                <tr><td>水</td><td>${data.water}</td></tr>
+              </table>
+            </div>
+            <div class="section">
+              <h3>薬一覧</h3>
+              <table>
+                <tr><th>薬名</th><th>備蓄量</th><th>需要</th><th>供給日数</th></tr>
+                <tr><td>薬1</td><td>${data.stock.medicine1}</td><td>${data.demand.medicine1}</td><td>${data.daysSupply.medicine1}</td></tr>
+                <tr><td>薬2</td><td>${data.stock.medicine2}</td><td>${data.demand.medicine2}</td><td>${data.daysSupply.medicine2}</td></tr>
+                <tr><td>薬3</td><td>${data.stock.medicine3}</td><td>${data.demand.medicine3}</td><td>${data.daysSupply.medicine3}</td></tr>
+              </table>
+            </div>
+          </div>`;
+        popup.classList.add('show');
       }
 
       function sendLocationToServer(latitude, longitude) {
@@ -307,31 +356,6 @@ function showPopup(data) {
         }
       }
 
-      function showPopup(data) {
-        const popup = document.getElementById('popup');
-        popup.innerHTML = `<div class="popup-content">
-          name=${data.name}
-          prefecture=${data.prefecture}
-          capacity=${data.capacity}
-          food=${data.food}
-          water=${data.water}
-          medicines_medicine1=${data.medicines.medicine1}
-          medicines_medicine2=${data.medicines.medicine2}
-          medicines_medicine3=${data.medicines.medicine3}
-          stock_medicine1=${data.stock.medicine1}
-          stock_medicine2=${data.stock.medicine2}
-          stock_medicine3=${data.stock.medicine3}
-          demand_medicine1=${data.demand.medicine1}
-          demand_medicine2=${data.demand.medicine2}
-          demand_medicine3=${data.demand.medicine3}
-          daysSupply_medicine1=${data.daysSupply.medicine1}
-          daysSupply_medicine2=${data.daysSupply.medicine2}
-          daysSupply_medicine3=${data.daysSupply.medicine3}
-          </div>`;
-        popup.classList.add('show');
-
-      }
-
       function hidePopup() {
         const popup = document.getElementById('popup');
         popup.classList.remove('show');
@@ -342,11 +366,21 @@ function showPopup(data) {
         window.history.back();
       }
 
+      function goaddpage() {
+        window.location.href = '/add'; // ここでページ遷移するURLを指定します
+      }
+
     </script>
   </head>
   <body>
-    <div id="map" style="height: 100%;"></div>
+    <div class="header-image">
+      <img src="http://localhost:5500/js/client/image/safety_log.jpg" alt="Safety Logo">
+    </div>
+    <div id="map"></div>
     <div id="popup" class="popup"></div>
-    <div class="back-button" onclick="goBack()">&larr; Back</div>
+    <div class="button-container">
+      <div class="back-button" onclick="goBack()">ホームへ</div>
+      <div class="home2-button" onclick="goaddpage()">避難所追加</div>
+    </div>
   </body>
 </html>
