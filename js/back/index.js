@@ -22,6 +22,7 @@ mongoose.connect(mongoURI)
 const shelterSchema = new mongoose.Schema({
   id: Number,
   name: String,
+  location: { latitude: Number, longitude: Number },
   prefecture: String,
   capacity: Number,
   food: Number,
@@ -64,16 +65,35 @@ app.get("/shelters/:prefecture", async (req, res) => {
 });
 
 
-// 新しい避難所情報を追加するエンドポイント
+// 新しい避難所を作成して保存するエンドポイント
 app.post("/shelters", async (req, res) => {
   try {
-    const { id, name, prefecture, capacity, food, water, medicines } = req.body;
-    const newShelter = new Shelter({ id, name, prefecture, capacity, food, water, medicines });
+    const { name, location, prefecture, capacity, food, water, medicines } = req.body;
+
+    console.log("Received request body:", req.body);
+
+    // 現在の最大のIDを取得
+    const maxShelter = await Shelter.findOne().sort({ id: -1 }).exec();
+    const newId = maxShelter ? maxShelter.id + 1 : 1;
+
+    const newShelter = new Shelter({
+      id: newId,
+      name: name,
+      location: location,
+      prefecture: prefecture,
+      capacity: capacity,
+      food: food,
+      water: water,
+      medicines: medicines
+    });
+
+    console.log("Saving new shelter:", newShelter);
+
     await newShelter.save();
-    res.status(201).send(newShelter);
+    res.status(201).send("新しい避難所が追加されました");
   } catch (error) {
-    console.error("避難所情報の追加に失敗しました:", error);
-    res.status(400).send("避難所情報の追加に失敗しました");
+    console.error("避難所の追加中にエラーが発生しました:", error);
+    res.status(500).send("避難所の追加中にエラーが発生しました");
   }
 });
 

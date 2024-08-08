@@ -331,6 +331,11 @@
         // Perform the desired action, e.g., navigating back
         window.history.back();
       }
+
+      function goaddpage() {
+        window.location.href = '/add'; // ここでページ遷移するURLを指定します
+      }
+
     </script>
   </head>
   <body>
@@ -338,7 +343,7 @@
     <div id="popup" class="popup"></div>
     <div class="button-container">
       <div class="back-button" onclick="goBack()">ホームへ</div>
-      <div class="home2-button" onclick="goBack()">避難所追加</div>
+      <div class="home2-button" onclick="goaddpage()">避難所追加</div>
     </div>
   </body>
 </html>
