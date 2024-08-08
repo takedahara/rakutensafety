@@ -84,3 +84,25 @@ async function getShelterInfo(prefecture) {
 //     res.json({ locations });
 //   });
   
+
+exports.shelterInfo = async (req, res) => {
+
+  console.log("避難所情報を取得します。" , req.body.shelterid);
+
+  try {
+    const response = await fetch(`http://backend:4001/shelters/${req.body.shelterid}/medicine-stats`);
+
+    if (!response.ok) {
+      throw new Error('避難所情報の取得に失敗しました');
+    }
+
+    const data = await response.json();
+    console.log("取得した避難所情報+α:", data);
+    return res.json(data)
+
+  } catch (error) {
+    console.error("エラーが発生しました:", error);
+    console.log("エラーが発生しました。");
+  }
+
+};

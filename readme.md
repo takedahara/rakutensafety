@@ -131,13 +131,64 @@ curl -X GET http://localhost:4001/people/2
 ]
 ```
 
+### ５. 避難所IDに基づいて避難者情報+薬の備蓄量や需要量を取得
+
+- **URL:** `shelters/:shelterid/medicine-stats:`
+- **メソッド:** `GET`
+- **説明:** 指定された避難所IDに基づいて、その避難所の情報に加えて、薬の備蓄量や需要量を取得します。
+
+### 例
+
+#### リクエスト
+
+```sh
+curl -X GET http://backend:4001/shelters/1/medicine-stats
+```
+
+#### レスポンス
+
+```json
+  {
+    "id":1,
+    "name":"避難所A",
+    "prefecture":"Tokyo",
+    "capacity":100,
+    "food":20,
+    "water":30,
+    "medicines":
+    {
+      "medicine1":"30",
+      "medicine2":"20",
+      "medicine3":"10"
+    },
+    "stock":
+    {
+      "medicine1":30,
+      "medicine2":20,
+      "medicine3":10
+    },
+    "demand":
+    {
+      "medicine1":2,
+      "medicine2":6,
+      "medicine3":1
+    },
+    "daysSupply":
+    {
+      "medicine1":15,
+      "medicine2":3,
+      "medicine3":10
+    }
+  }
+```
+
 このエンドポイントを利用することで、指定された避難所IDに所属するすべての避難者の情報を取得することができます。
 
 
 
 ## ログとエラー処理
 
-MongoDBとの接続に失敗した場合、またはデータの取得・保存に失敗した場合、サーバーは適切なエラーメッセージをコンソールに出力し、HTTPステータスコード500または400を返します。
+MongoDBとの接続に失敗した場合、またはデータの取得・保存に失敗した場合、サーバー適切なエラーメッセージをコンソールに出力し、HTTPステータスコード500または400を返します。
 
 ## 開発
 

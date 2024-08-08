@@ -213,6 +213,23 @@ db.shelter_info.insertMany([
           medicine2: 25,
           medicine3: 35,
         }
+      },
+      {
+        id: 9,
+        name: "避難所I",
+        location: {
+          latitude: 36.0824,
+          longitude: 140.11
+        },
+        prefecture: "Ibaraki",
+        capacity: 220,
+        food: 60,
+        water: 70,
+        medicines: {
+          medicine1: 25,
+          medicine2: 25,
+          medicine3: 35,
+        }
       }
 ])
 
