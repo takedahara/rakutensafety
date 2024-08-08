@@ -2,107 +2,108 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>楽天セーフティ |ホーム</title>
+    <title>楽天セーフティ | ホーム</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body, html {
-            height: 100vh;
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #f0f0f0;
-            overflow: hidden;
-        }
+      * {
+        box-sizing: border-box;
+      }
 
-        .container {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
+      *:focus {
+        outline: none;
+      }
 
-        .map {
-            position: absolute;
-            width: 60vh; /* Adjusted to maintain the same scale */
-            height: 177.78vh; /* Adjusted to maintain the same scale */
-            max-width: 100vw;
-            background: url('https://i.ytimg.com/vi/mE9SiIdwouw/maxresdefault.jpg') no-repeat center center;
-            background-size: cover;
-            z-index: 1;
-            filter: brightness(0.7);
-        }
+      body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #FFF;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        overflow: hidden;
+      }
 
-        .button-container {
-            position: relative;
-            width: 85%;
-            z-index: 2;
-            padding: 25px;
-            background: rgb(207, 207, 207);
-            border-radius: 50px;
-            border: px solid #BF0000; /* Added border */
-            animation: fadeIn 1s ease-out;
-        }
+      .background {
+        background-color: #BF0000;
+        padding: 40px 20px;
+        width: 100%;
+        max-width: 530px;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+      .button-container {
+        margin: 0 auto;
+        width: 100%;
+        max-width: 480px;
+        background-color: #FFF;
+        padding: 30px;
+        border-radius: 40px;
+        text-align: center;
+      }
 
-        .button {
-            width: 100%;
-            padding: 40px 140px;
-            margin: 20px 0;
-            background-color: white;
-            border: 3px solid #BF0000; /* Added border */
-            border-radius: 22px;
-            cursor: pointer;
-            font-size: 32px;
-            font-weight: bold;
-            text-align: center;
-            transition: all 0.3s ease;
-            white-space: nowrap; /* Prevents line breaks */
-        }
+      .button {
+        border: 4px solid #BF0000;
+        background: #FFF;
+        color: #BF0000;
+        font-size: 1.2em;
+        line-height: 30px;
+        padding: 15px 0;
+        text-decoration: none;
+        text-shadow: none;
+        border-radius: 25px;
+        box-shadow: none;
+        transition: 0.25s;
+        display: block;
+        width: 100%;
+        margin: 20px auto;
+        font-weight: bold;
+        cursor: pointer;
+      }
 
-        .button:hover {
-            background-color: #f0f0f0;
-            transform: translateY(-3px);
-        }
+      .button:hover {
+        background-color: #f0f0f0;
+        transform: translateY(-3px);
+      }
 
-        @media (orientation: portrait) {
-            .map {
-                width: 100vw; /* Ensure it fills the viewport width */
-                height: 56.25vw; /* Maintain aspect ratio */
-            }
+      .logo {
+        width: 300px;
+        height: auto;
+        margin-bottom: 20px;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
         }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="map"></div>
-        <div class="button-container">
-            <!-- Each form has its own action but shares the same button style -->
-            <form action="/Map" method="get">
-                <button type="submit" name="action" value="map" class="button">地図へ</button>
-            </form>
-            <form action="https://pharmacy.healthcare.rakuten.co.jp/" method="get" target="_blank">
-                <button type="submit" name="action" value="healthcare" class="button">ヘルスケアへ</button>
-            </form>
-            <form action="https://network.mobile.rakuten.co.jp/info/disaster/" method="get" target="_blank">
-                <button type="submit" name="action" value="safety" class="button">安否確認へ</button>
-            </form>
-        </div>
+  <div class="background">
+    <div class="button-container">
+      <img src="http://localhost:5500/js/client/image/safety_log.jpg" alt="Logo" class="logo">
+      <!-- Each form has its own action but shares the same button style -->
+      <form action="/Map" method="get">
+        <button type="submit" name="action" value="map" class="button">地図へ</button>
+      </form>
+      <form action="https://pharmacy.healthcare.rakuten.co.jp/" method="get" target="_blank">
+        <button type="submit" name="action" value="healthcare" class="button">ヘルスケアへ</button>
+      </form>
+      <form action="https://network.mobile.rakuten.co.jp/info/disaster/" method="get" target="_blank">
+        <button type="submit" name="action" value="safety" class="button">安否確認へ</button>
+      </form>
     </div>
+  </div>
 </body>
 </html>
