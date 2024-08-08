@@ -64,19 +64,36 @@ app.get("/shelters/:prefecture", async (req, res) => {
 });
 
 
-// 新しい避難所情報を追加するエンドポイント
+// 新しい避難所を作成して保存するエンドポイント
 app.post("/shelters", async (req, res) => {
   try {
-    const { id, name, prefecture, capacity, food, water, medicines } = req.body;
-    const newShelter = new Shelter({ id, name, prefecture, capacity, food, water, medicines });
+    const { name, location, prefecture, capacity, food, water, medicines } = req.body;
+
+    // 現在の最大のIDを取得
+    const maxShelter = await Shelter.findOne().sort({ id: -1 }).exec();
+    const newId = maxShelter ? maxShelter.id + 1 : 1;
+
+    const newShelter = new Shelter({
+      id: newId,
+      name: name,
+      location: {
+        latitude: location.latitude,
+        longitude: location.longitude
+      },
+      prefecture: prefecture,
+      capacity: capacity,
+      food: food,
+      water: water,
+      medicines: medicines
+    });
+
     await newShelter.save();
-    res.status(201).send(newShelter);
+    res.status(201).send("新しい避難所が追加されました");
   } catch (error) {
-    console.error("避難所情報の追加に失敗しました:", error);
-    res.status(400).send("避難所情報の追加に失敗しました");
+    console.error("避難所の追加中にエラーが発生しました:", error);
+    res.status(500).send("避難所の追加中にエラーが発生しました");
   }
 });
-
 
 
 // 避難所IDに基づいて避難所情報を取得するエンドポイント
