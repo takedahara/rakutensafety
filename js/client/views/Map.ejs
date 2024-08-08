@@ -132,6 +132,18 @@
         .then(response => response.json())
         .then(data => {
           console.log(data);
+          data.forEach(shelter => {
+            const name = shelter.name;
+            const prefecture = shelter.prefecture;
+            const capacity = shelter.capacity;
+            const food = shelter.food;
+            const water = shelter.water;
+            const medicines_medicine1 = shelter.medicines.medicine1; 
+            const medicines_medicine2 = shelter.medicines.medicine2;
+            const medicines_medicine3 = shelter.medicines.medicine3;
+            const stock_medicine1 = shelter.stock.medicine1; 
+            const stock_medicine2 = shelter.stock.medicine2;
+            const stock_medicine3 = shelter.stock.medicine3;         
         })
         .catch(error => {
           console.error('Error:', error);
