@@ -37,9 +37,12 @@
 #### リクエスト例
 
 ```sh
-curl -X GET http://localhost:4001/shelters/Aichi
+curl -X GET http://backend:4001/shelters/Aichi
 ```
+```json
+[{"_id":"66b44f72cc03d8103ff3f55b","id":3,"name":"避難所C","location":"市区町村Z","prefecture":"Aichi","capacity":200,"food":70,"water":80,"medicines":{"medicine1":"50","medicine2":"40","medicine3":"30"}},{"_id":"66b44f72cc03d8103ff3f55e","id":6,"name":"避難所F","location":"市区町村U","prefecture":"Aichi","capacity":220,"food":80,"water":90,"medicines":{"medicine1":"55","medicine2":"45","medicine3":"35"}}]
 
+```
 ### 2. 避難所IDに基づいて避難所情報を取得
 
 - **URL:** `/location/:shelterid`
@@ -49,7 +52,12 @@ curl -X GET http://localhost:4001/shelters/Aichi
 #### リクエスト例
 
 ```sh
-curl -X GET http://localhost:4001/location/1  # 1 は例として避難所ID
+curl -X GET http://backend:4001/location/hinanzyo/1  # 1 は例として避難所ID
+```
+
+```json
+{"_id":"66b44f72cc03d8103ff3f559","id":1,"name":"避難所A","location":"市区町村X","prefecture":"Tokyo","capacity":100,"food":20,"water":30,"medicines":{"medicine1":"30","medicine2":"20","medicine3":"10"}}
+
 ```
 
 ### 3. 新しい避難所情報を追加
@@ -76,7 +84,7 @@ curl -X GET http://localhost:4001/location/1  # 1 は例として避難所ID
 #### リクエスト例
 
 ```sh
-curl -X POST http://localhost:4001/shelters \
+curl -X POST http://backend:4001/shelters \
 -H "Content-Type: application/json" \
 -d '{
   "id": 1,
@@ -101,7 +109,7 @@ curl -X POST http://localhost:4001/shelters \
 #### リクエスト
 
 ```sh
-curl -X GET http://localhost:4001/people/2
+curl -X GET http://backend:4001/people/2
 ```
 
 #### レスポンス
