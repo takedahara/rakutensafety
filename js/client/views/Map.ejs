@@ -118,37 +118,104 @@
         // console.log("取得した避難所情報:", data);
       }
 
-      function getShelterInfo(id){
-            
-        fetch('/shelterInfo', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            shelterid: id
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          data.forEach(shelter => {
-            const name = shelter.name;
-            const prefecture = shelter.prefecture;
-            const capacity = shelter.capacity;
-            const food = shelter.food;
-            const water = shelter.water;
-            const medicines_medicine1 = shelter.medicines.medicine1; 
-            const medicines_medicine2 = shelter.medicines.medicine2;
-            const medicines_medicine3 = shelter.medicines.medicine3;
-            const stock_medicine1 = shelter.stock.medicine1; 
-            const stock_medicine2 = shelter.stock.medicine2;
-            const stock_medicine3 = shelter.stock.medicine3;         
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
+  async function getShelterInfo(id) {
+  try {
+    const response = await fetch('/shelterInfo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        shelterid: id
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+
+    const ret = {
+      name: data.name,
+      prefecture: data.prefecture,
+      capacity: data.capacity,
+      food: data.food,
+      water: data.water,
+      medicines: {
+        medicine1: data.medicines.medicine1,
+        medicine2: data.medicines.medicine2,
+        medicine3: data.medicines.medicine3
+      },
+      stock: {
+        medicine1: data.stock.medicine1,
+        medicine2: data.stock.medicine2,
+        medicine3: data.stock.medicine3
+      },
+      demand: {
+        medicine1: data.demand.medicine1,
+        medicine2: data.demand.medicine2,
+        medicine3: data.demand.medicine3
+      },
+      daysSupply: {
+        medicine1: data.daysSupply.medicine1,
+        medicine2: data.daysSupply.medicine2,
+        medicine3: data.daysSupply.medicine3
       }
+    };
+
+    console.log(data);
+    console.log(ret);
+
+    return ret;
+
+  } catch (error) {
+    console.error('Error:', error);
+    return null;
+  }
+}
+
+function addMarker(latitude, longitude, shelterid) {
+  const location = new google.maps.LatLng(latitude, longitude);
+
+  const marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    title: "Location",
+    icon: {
+      url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+    }
+  });
+
+  marker.addListener('click', async () => {
+    const data = await getShelterInfo(shelterid);
+    if (data) {
+      console.log(data);
+      showPopup(data);
+    } else {
+      console.error('Failed to retrieve shelter info');
+    }
+  });
+}
+
+function showPopup(data) {
+  const popup = document.getElementById('popup');
+  popup.innerHTML = `
+    <div class="popup-content">
+      <h2>${data.name}</h2>
+      <p>Prefecture: ${data.prefecture}</p>
+      <p>Capacity: ${data.capacity}</p>
+      <p>Food: ${data.food}</p>
+      <p>Water: ${data.water}</p>
+      <p>Medicines:</p>
+      <ul>
+        <li>${data.medicines.medicine1}: Stock - ${data.stock.medicine1}, Demand - ${data.demand.medicine1}, Days Supply - ${data.daysSupply.medicine1}</li>
+        <li>${data.medicines.medicine2}: Stock - ${data.stock.medicine2}, Demand - ${data.demand.medicine2}, Days Supply - ${data.daysSupply.medicine2}</li>
+        <li>${data.medicines.medicine3}: Stock - ${data.stock.medicine3}, Demand - ${data.demand.medicine3}, Days Supply - ${data.daysSupply.medicine3}</li>
+      </ul>
+    </div>`;
+  popup.classList.add('show');
+}
 
 
       function addMarker(latitude, longitude, shelterid) {
@@ -174,10 +241,16 @@
         //   strokeWeight: 2
         // });
 
-        marker.addListener('click', () => {
-          getShelterInfo(shelterid);
-          showPopup();
+        marker.addListener('click', async () => {
+          const data = await getShelterInfo(shelterid);
+          if (data) {
+            console.log(data);
+            showPopup(data);
+          } else {
+            console.error('Failed to retrieve shelter info');
+          }
         });
+
       }
 
       function sendLocationToServer(latitude, longitude) {
@@ -234,9 +307,27 @@
         }
       }
 
-      function showPopup() {
+      function showPopup(data) {
         const popup = document.getElementById('popup');
-        popup.innerHTML = `<div class="popup-content">un</div>`;
+        popup.innerHTML = `<div class="popup-content">
+          name=${data.name}
+          prefecture=${data.prefecture}
+          capacity=${data.capacity}
+          food=${data.food}
+          water=${data.water}
+          medicines_medicine1=${data.medicines.medicine1}
+          medicines_medicine2=${data.medicines.medicine2}
+          medicines_medicine3=${data.medicines.medicine3}
+          stock_medicine1=${data.stock.medicine1}
+          stock_medicine2=${data.stock.medicine2}
+          stock_medicine3=${data.stock.medicine3}
+          demand_medicine1=${data.demand.medicine1}
+          demand_medicine2=${data.demand.medicine2}
+          demand_medicine3=${data.demand.medicine3}
+          daysSupply_medicine1=${data.daysSupply.medicine1}
+          daysSupply_medicine2=${data.daysSupply.medicine2}
+          daysSupply_medicine3=${data.daysSupply.medicine3}
+          </div>`;
         popup.classList.add('show');
 
       }
