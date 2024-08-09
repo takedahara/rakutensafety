@@ -1,10 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const app = express();
 const port = 3000;
 
 app.use(bodyParser.json()); // JSONパーサーを設定
+
+// 静的ファイルを提供するディレクトリの設定
+app.use(express.static(path.join(__dirname)));
 
 // Viewエンジンの設定
 app.set('view engine', 'ejs');

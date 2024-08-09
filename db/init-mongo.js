@@ -1357,6 +1357,23 @@ db.shelter_info.insertMany([
           medicine3: 1110
         }
       },
+            {
+        id: 16,
+        name: "守口市立庭窪中学校",
+        location: {
+          latitude: 34.756213605417,
+          longitude:  135.58575725897
+        },
+        prefecture: "Osaka",
+        capacity: 100,
+        food: 10,
+        water: 200,
+        medicines: {
+          medicine1: 1120,
+          medicine2: 1150,
+          medicine3: 1110
+        }
+      },
 ])
 
 
